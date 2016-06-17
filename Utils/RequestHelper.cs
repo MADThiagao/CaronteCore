@@ -36,7 +36,7 @@ namespace CaronteCore.Utils
             }
         }
 
-        public static T Post<T>(string uri, object obj)
+        public static T Post<T>(string controller, string action, object obj)
         {
 
             using (var client = new HttpClient())
@@ -50,7 +50,7 @@ namespace CaronteCore.Utils
 
                 try
                 {
-                    HttpResponseMessage response = client.PostAsync(uri, conteudo).Result;
+                    HttpResponseMessage response = client.PostAsync(ResolveUrl(controller, action), conteudo).Result;
                     if (response.IsSuccessStatusCode)
                         return JsonConvert.DeserializeObject<T>(response.Content.ReadAsStringAsync().Result);
                 }
@@ -74,7 +74,7 @@ namespace CaronteCore.Utils
 
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync(ResolveUrl(controller, idUsuario, action, id));
+                    HttpResponseMessage response = await client.GetAsync(ResolveUrl(controller, action, idUsuario, id));
                     if (response.IsSuccessStatusCode)
                         return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
                 }
@@ -98,7 +98,7 @@ namespace CaronteCore.Utils
 
                 try
                 {
-                    HttpResponseMessage response = client.GetAsync(ResolveUrl(controller, idUsuario, action, id)).Result;
+                    HttpResponseMessage response = client.GetAsync(ResolveUrl(controller, action, idUsuario, id)).Result;
 
                     if (response.IsSuccessStatusCode)
                         return JsonConvert.DeserializeObject<T>(response.Content.ReadAsStringAsync().Result);
@@ -112,14 +112,15 @@ namespace CaronteCore.Utils
             }
         }
 
-        public static string ResolveUrl(string controller, int idUsuario, string action, int? id = null)
+        public static string ResolveUrl(string controller, string action, int? idUsuario = null, int? id = null)
         {
-
-            if (id.HasValue)
-                return string.Concat(controller, "/", idUsuario, "/", action, "/", id);
+            if (idUsuario.HasValue)
+                if (id.HasValue)
+                    return string.Concat(controller, "/", idUsuario, "/", action, "/", id);
+                else
+                    return string.Concat(controller, "/", idUsuario, "/", action);
             else
-                return string.Concat(controller, "/", idUsuario, "/", action);
-
+                return string.Concat(controller, "/", action);
         }
     }
 }
