@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Categoria.cs" />
+    <Compile Include="Models\DTO\GraficoLinhaDTO.cs" />
     <Compile Include="Models\DTO\LoginDTO.cs" />
     <Compile Include="Models\Enum\LancamentoTipoEnum.cs" />
     <Compile Include="Models\Enum\StatusEnum.cs" />
