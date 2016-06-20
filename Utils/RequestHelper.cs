@@ -87,7 +87,7 @@ namespace CaronteCore.Utils
             }
         }
 
-        public static T Get<T>(string controller, int idUsuario, string action, int? id = null)
+        public static T Get<T>(string controller, string action, int idUsuario, int? id = null)
         {
 
             using (var client = new HttpClient())
@@ -122,5 +122,6 @@ namespace CaronteCore.Utils
             else
                 return string.Concat(controller, "/", action);
         }
+               
     }
 }
